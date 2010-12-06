@@ -91,7 +91,7 @@ public class ChatRoomImpl extends PortableRemoteObject implements ChatRoom
         ChatClientRMI.UserInfo p;
        
         for (Enumeration<ChatClientRMI.UserInfo> e = _users.elements(); e.hasMoreElements(); ){
-		p = (ChatClientRMI.UserInfo)e.nextElement();
+		p = e.nextElement();
 		try{
             		aUser = (ChatClientRMI.ChatUser)PortableRemoteObject.narrow(_initContext.lookup(p.name), ChatClientRMI.ChatUser.class);            	
             		aUser.updateMessage(message, fromNickname);
@@ -115,7 +115,7 @@ public class ChatRoomImpl extends PortableRemoteObject implements ChatRoom
 		p.dx = p.x = x;
 		p.dy = p.y = y;
 		try{
-            		aUser = (ChatClientRMI.ChatUser)PortableRemoteObject.narrow(_initContext.lookup(p.name), ChatClientRMI.ChatUser.class);
+            	aUser = (ChatClientRMI.ChatUser)PortableRemoteObject.narrow(_initContext.lookup(p.name), ChatClientRMI.ChatUser.class);
 	    		aUser.updateLocation(x, y, fromNickname);
 	    	} catch (Exception err){
 	    		System.out.println(err);	

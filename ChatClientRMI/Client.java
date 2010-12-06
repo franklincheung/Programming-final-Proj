@@ -41,7 +41,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   private JButton _connectButton;    
   private JButton _disconnectButton; 
      
-  private Vector serverVector = new Vector();
+  private Vector<String> serverVector = new Vector<String>();
   private JList serverList = new JList(serverVector);
 
   ChatRoom chatroom = null;    
@@ -126,7 +126,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   UserInfo              userInfo[] = new UserInfo[MAX_USERS];
   int                   totalUsers = 0;
   int                   myIdx = 0;
-  Hashtable		users = new Hashtable();
+  Hashtable<String,UserInfo>		users = new Hashtable<String,UserInfo>();
   
   //say delay
   static int    	SAY_TIME = 15;
@@ -403,7 +403,7 @@ public class Client extends JFrame implements Runnable, ActionListener
     int count = 0;
     int direction;
     
-    for (Enumeration e = users.elements(); e.hasMoreElements(); ){
+    for (Enumeration<UserInfo> e = users.elements(); e.hasMoreElements(); ){
     	UserInfo p = (UserInfo)e.nextElement();
     	
     	direction = sgn(p.dx - p.x);
@@ -462,7 +462,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   }
 
   public void printUserList(){
-  	Enumeration usernames = users.keys();
+  	Enumeration<String> usernames = users.keys();
   	while ( usernames.hasMoreElements() ){
   		System.out.println("user name: " + usernames.nextElement());	
   	}
@@ -513,7 +513,7 @@ public class Client extends JFrame implements Runnable, ActionListener
 
     int count = 0;    
     
-    for (Enumeration e = users.elements(); e.hasMoreElements(); ){
+    for (Enumeration<UserInfo> e = users.elements(); e.hasMoreElements(); ){
     	// draw icon
     	p = (UserInfo)e.nextElement();
     	g.drawImage(icons[p.code], p.x - ICON_WIDTH/2, p.y - ICON_HEIGHT/2, this);
