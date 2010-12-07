@@ -6,12 +6,14 @@
  
 package ChatClientRMI;
 
+import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.*;
 import java.rmi.RemoteException;
 import javax.rmi.PortableRemoteObject;
 import java.rmi.RMISecurityManager;
 
 import ChatServerRMI.*;
+
 
 import java.io.*;
 import javax.swing.*;
@@ -31,7 +33,7 @@ public class Client extends JFrame implements Runnable, ActionListener
 {
 
   private static final String connectStr = "Connect";
-  private static final String disconnectStr = "Disonnect";
+  private static final String disconnectStr = "Disconnect";
     
   private String _nickname;
   private Thread _thread;
@@ -126,7 +128,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   UserInfo              userInfo[] = new UserInfo[MAX_USERS];
   int                   totalUsers = 0;
   int                   myIdx = 0;
-  Hashtable<String,UserInfo>		users = new Hashtable<String,UserInfo>();
+  ConcurrentHashMap<String,UserInfo>		users = new ConcurrentHashMap<String,UserInfo>();
   
   //say delay
   static int    	SAY_TIME = 15;
@@ -152,9 +154,9 @@ public class Client extends JFrame implements Runnable, ActionListener
         _nickname = name;
         try{
 		_initialContext = new InitialContext();
-	} catch (Exception e){
-		System.out.println(e);	
-	}
+        } catch (Exception e){
+        	System.out.println(e);	
+        }
         
         // Create and install a security manager
         if (System.getSecurityManager() == null) {
@@ -162,10 +164,9 @@ public class Client extends JFrame implements Runnable, ActionListener
         }       
         
 
-	setSize(new Dimension(CLIENT_WIDTH, CLIENT_HEIGHT));
-	this.getContentPane().setLayout(null);
-	this.getContentPane().setBackground(backColor);
-	
+        setSize(new Dimension(CLIENT_WIDTH, CLIENT_HEIGHT));
+        this.getContentPane().setLayout(null);
+        this.getContentPane().setBackground(backColor);
 
     	talkArea.setEditable(false);
     	talkArea.setBackground(Color.white);
@@ -207,7 +208,7 @@ public class Client extends JFrame implements Runnable, ActionListener
 	this.getContentPane().add(serverList);
     	
     	
-    	// add mouse listener for serverList
+    	// add mouse listener for serverList/*
     	serverList.addMouseListener(new java.awt.event.MouseAdapter(){
     		public void mouseEntered(MouseEvent e){
     			int index = serverList.locationToIndex(e.getPoint());
@@ -223,7 +224,7 @@ public class Client extends JFrame implements Runnable, ActionListener
     			System.out.println("you exited index " + index);
     		}
     	});
-   	
+    	
         //add mouse listener
     	this.addMouseListener(new java.awt.event.MouseAdapter(){
         	public void mousePressed(java.awt.event.MouseEvent event){
@@ -246,7 +247,7 @@ public class Client extends JFrame implements Runnable, ActionListener
             		System.out.println(err);
             	}
             	if (success) 
-            		System.out.println("Disonnected...");
+            		System.out.println("Disconnected...");
             	else
             		System.out.println("Not disconnected.");
 
@@ -448,7 +449,7 @@ public class Client extends JFrame implements Runnable, ActionListener
         if (x < GRAPHIC_LEFT || x >= GRAPHIC_LEFT + GRAPHIC_WIDTH || y < GRAPHIC_TOP || y > GRAPHIC_TOP + GRAPHIC_HEIGHT) return;
         
         moveEnd = false;
-	UserInfo p = (UserInfo)users.get(_nickname);
+	UserInfo p = users.get(_nickname);
         p.dx = x - GRAPHIC_LEFT;
         p.dy = y - GRAPHIC_TOP;
         
@@ -515,7 +516,7 @@ public class Client extends JFrame implements Runnable, ActionListener
     
     for (Enumeration<UserInfo> e = users.elements(); e.hasMoreElements(); ){
     	// draw icon
-    	p = (UserInfo)e.nextElement();
+    	p = e.nextElement();
     	g.drawImage(icons[p.code], p.x - ICON_WIDTH/2, p.y - ICON_HEIGHT/2, this);
     	
     	// draw name

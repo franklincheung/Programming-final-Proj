@@ -10,6 +10,7 @@ import javax.naming.*;
 import java.rmi.RemoteException;
 import java.rmi.RMISecurityManager;
 import javax.rmi.PortableRemoteObject;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.*;
 
 /** 
@@ -19,7 +20,7 @@ import java.util.*;
  */
 public class ChatRoomImpl extends PortableRemoteObject implements ChatRoom 
 {
-    private Hashtable<String,ChatClientRMI.UserInfo> _users;
+    private ConcurrentHashMap<String,ChatClientRMI.UserInfo> _users;
     private org.omg.CORBA.ORB _orb;
     private Context _initContext;
     private Random r = new Random();    	    
@@ -34,7 +35,7 @@ public class ChatRoomImpl extends PortableRemoteObject implements ChatRoom
     	} catch(Exception e){
     		System.out.println(e);	
     	}
-    	_users = new Hashtable<String,ChatClientRMI.UserInfo>();
+    	_users = new ConcurrentHashMap<String,ChatClientRMI.UserInfo>();
     }
   
     public boolean connect(String nickname, int avatarCode) throws java.rmi.RemoteException 
