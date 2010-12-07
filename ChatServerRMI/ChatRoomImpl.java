@@ -57,9 +57,10 @@ public class ChatRoomImpl extends PortableRemoteObject implements ChatRoom
     		user.dy = user.y = ChatClientRMI.Client.ICON_HEIGHT / 2 + r2;            
     	    
     		// send current userlist to the new user
+    		_users.put(user.name, user);
     		sendUserList(nickname);
     	    
-    		_users.put(user.name, user);
+    		
     	    
             // Update all other clients that nickname joined chat room
             sendMessage(MsgType.CONNECT + "@" + avatarCode + "@" + user.x + "@" + user.y + "@" + nickname + " has joined the chat room", "Server");

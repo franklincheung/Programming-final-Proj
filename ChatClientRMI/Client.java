@@ -7,6 +7,7 @@
 package ChatClientRMI;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Hashtable;
 import javax.naming.*;
 import java.rmi.RemoteException;
 import javax.rmi.PortableRemoteObject;
@@ -128,7 +129,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   UserInfo              userInfo[] = new UserInfo[MAX_USERS];
   int                   totalUsers = 0;
   int                   myIdx = 0;
-  ConcurrentHashMap<String,UserInfo>		users = new ConcurrentHashMap<String,UserInfo>();
+  Hashtable<String,UserInfo>		users = new Hashtable<String,UserInfo>();
   
   //say delay
   static int    	SAY_TIME = 15;
@@ -340,9 +341,9 @@ public class Client extends JFrame implements Runnable, ActionListener
       		
       		users.clear();
 
-            	if ( endChat ) {
-            		return;	
-            	}
+            if ( endChat ) {
+            	return;	
+           	}
 			
 		boolean success = false;
 		try{
@@ -352,7 +353,7 @@ public class Client extends JFrame implements Runnable, ActionListener
 		}
             	if (success){   
             		endChat = true;
-            		System.out.println("Disonnected...");
+            		System.out.println("Disconnected...");
             	} else{   
             		System.out.println("Not disconnected.");
             	}
@@ -496,7 +497,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   }  
   
   //draw graphic area
-  public synchronized void  drawGraphicArea(){
+  public synchronized void drawGraphicArea(){
     Graphics g = graphicImg.getGraphics();
     FontMetrics fntM = g.getFontMetrics();
 
