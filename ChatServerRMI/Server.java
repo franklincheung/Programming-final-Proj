@@ -59,7 +59,7 @@ public class Server
             System.out.println("ChatRoomServer: " + serverName + " bound in registry");
         } catch (Exception e) {
             System.out.println("ChatRoomImpl err: " + e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     } // end of run()
   } // end of class ServerThread    

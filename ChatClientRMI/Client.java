@@ -114,6 +114,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   public static int            ICON_WIDTH = 32;
   public static int            ICON_HEIGHT = 32;
   Image                 icons[] = new Image[MAX_ICONS];
+  Image                 emotes[] = new Image[3];
   int                   totalIcons = 16;
   
   static String  BACKIMG_FILENAME[] = {"back0.jpg", "back1.jpg", "back2.jpg", "back3.jpg"};  
@@ -129,7 +130,7 @@ public class Client extends JFrame implements Runnable, ActionListener
   UserInfo              userInfo[] = new UserInfo[MAX_USERS];
   int                   totalUsers = 0;
   int                   myIdx = 0;
-  Hashtable<String,UserInfo>		users = new Hashtable<String,UserInfo>();
+  ConcurrentHashMap<String,UserInfo>		users = new ConcurrentHashMap<String,UserInfo>();
   
   //say delay
   static int    	SAY_TIME = 15;
@@ -521,6 +522,7 @@ public class Client extends JFrame implements Runnable, ActionListener
     	g.drawImage(icons[p.code], p.x - ICON_WIDTH/2, p.y - ICON_HEIGHT/2, this);
     	
     	// draw name
+    	
     	if (p.name.equals(_nickname)) g.setColor(Color.red);
     	else g.setColor(Color.yellow);
         int x = (p.x - fntM.stringWidth(p.name)/2);
@@ -550,10 +552,14 @@ public class Client extends JFrame implements Runnable, ActionListener
         saySplit[c] = p.say.substring(st, ed - 1);
         c++;
         x = p.x + ICON_WIDTH/2 + 5;
-        y = p.y - ICON_HEIGHT/2 + 5;
-        int w = ((c > 1)? SAY_WIDTH : fntM.stringWidth(saySplit[0])) + 5;
-        int h = fntM.getHeight() * c + 5;
-
+    	y = p.y - ICON_HEIGHT/2 + 5;
+    	int w = ((c > 1)? SAY_WIDTH : fntM.stringWidth(saySplit[0])) + 5;                	
+    	int h = fntM.getHeight() * c + 5;
+        if(saySplit[0].equals(":)")||saySplit[0].equals(":(")||saySplit[0].equals("TT")){
+        	w = 12;
+        	h = 12;
+        }
+        
         //draw say arrow
         g.setColor(Color.green);
         if (x + w >= GRAPHIC_WIDTH) {
@@ -574,12 +580,27 @@ public class Client extends JFrame implements Runnable, ActionListener
             //p.addPoint(x + ICON_WIDTH/2, y - 5);
             g.fillPolygon(polygon);
         }
-
+        
         g.fillRoundRect(x, y, w, h , 10, 10);
         g.setColor(Color.black);
         //g.drawRoundRect(x, y, w, h, 10, 10);
-        for (int j = 0; j < c; j++){
-            g.drawString(saySplit[j], x + 2, y + 2 + j * fntM.getHeight() + fntM.getAscent());
+        if(saySplit[0].equals(":)")){
+        	g.drawImage(emotes[0],x,y,w,h,this);
+        }
+        else{
+        	if(saySplit[0].equals(":(")){
+        		g.drawImage(emotes[1],x,y,w,h,this);
+            }
+        	else{
+        		if(saySplit[0].equals("TT")){
+        			g.drawImage(emotes[2],x,y,w,h,this);
+                }
+        		else{
+        			for (int j = 0; j < c; j++){
+            			g.drawString(saySplit[j], x + 2, y + 2 + j * fntM.getHeight() + fntM.getAscent());
+        			}
+        		}
+        	}
         }
         p.sayTime--;        
     } // end of for
@@ -635,7 +656,10 @@ public class Client extends JFrame implements Runnable, ActionListener
 	for (int i = 0; i < totalIcons; i++){
 		icons[i] = Toolkit.getDefaultToolkit().getImage(i + ".gif");
             	m.addImage(icons[i], 0);		
-	}          
+	}
+	emotes[0] = Toolkit.getDefaultToolkit().getImage("smilee.gif");
+	emotes[1] = Toolkit.getDefaultToolkit().getImage("sade.gif");
+	emotes[2] = Toolkit.getDefaultToolkit().getImage("crye.gif");
 	
         try{
           m.waitForAll();
