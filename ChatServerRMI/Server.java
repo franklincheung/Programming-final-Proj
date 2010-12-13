@@ -52,14 +52,13 @@ public class Server
         try {
             ChatRoomImpl obj = new ChatRoomImpl();
 
-            Context initialNamingContext = new InitialContext();
-            //initialNamingContext.rebind("ChatRoomServer",obj);
+            Context initialNamingContext = new InitialContext();            
             initialNamingContext.rebind(serverName,obj);
 
             System.out.println("ChatRoomServer: " + serverName + " bound in registry");
         } catch (Exception e) {
             System.out.println("ChatRoomImpl err: " + e.getMessage());
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     } // end of run()
   } // end of class ServerThread    

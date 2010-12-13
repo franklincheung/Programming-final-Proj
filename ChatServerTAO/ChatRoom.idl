@@ -1,0 +1,14 @@
+interface ChatRoom
+{
+  boolean connect (in string nickname, in long avatarCode);
+
+  boolean disconnect (in string nickname);
+
+  void sendMessage (inout string message, in string fromNickname);
+
+  boolean sendMessageToParty (in string message, in string fromNickname, in string toNickname);
+
+  void sendLocation (in long x, in long y, in string fromNickname);
+
+  void sendUserList(in string toNickname);
+};

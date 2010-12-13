@@ -1,0 +1,14 @@
+interface ChatRoom
+{
+  boolean connect (in String nickname, in int avatarCode)
+
+  boolean disconnect (in String nickname)
+
+  void sendMessage (inout String message, in String fromNickname)
+
+  boolean sendMessageToParty (in String message, in String fromNickname, in String toNickname)
+
+  void sendLocation (in int x, in int y, in String fromNickname)
+
+  void sendUserList(in String toNickname)
+}
