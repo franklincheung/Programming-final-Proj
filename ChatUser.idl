@@ -1,0 +1,10 @@
+module ChatClientRMI
+{
+  interface ChatUser
+  {
+    void updateMessage();
+    void updateLocation();
+    void updateUserList();
+  };
+};
+
